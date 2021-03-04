@@ -26,9 +26,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::resource('admin/products', ProductController::class);
-    Route::resource('admin/orders', OrderController::class);
-    Route::resource('admin/transactions', TransactionController::class);
-    Route::resource('admin/categories', CategoryController::class);
+    Route::resource('admin/products', ProductController::class)->except(['show']);
+    Route::resource('admin/orders', OrderController::class)->except(['show']);
+    Route::resource('admin/transactions', TransactionController::class)->except(['show', 'create', 'store', 'edit']);
+    Route::resource('admin/categories', CategoryController::class)->except(['show', 'create', 'edit']);
 });
 

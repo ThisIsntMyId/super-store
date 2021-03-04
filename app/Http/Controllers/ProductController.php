@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        dd('Product Index');
+        return view('admin.products.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        dd('Product Create');
+        return view('admin.products.create');
     }
 
     /**
@@ -44,10 +44,10 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
-    {
-        dd('Product Show' . $product->id);
-    }
+    // public function show(Product $product)
+    // {
+    //     dd('Product Show' . $product->id);
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -57,7 +57,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        dd('Product Edit' . $product->id);
+        return view('admin.products.create');
     }
 
     /**

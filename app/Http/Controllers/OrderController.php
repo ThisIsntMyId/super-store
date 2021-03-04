@@ -14,7 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        dd('Order Index');
+        return view('admin.orders.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        dd('Order Create');
+        return view('admin.orders.create');
     }
 
     /**
@@ -44,10 +44,10 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
-    {
-        dd('Order Show' . $order->id);
-    }
+    // public function show(Order $order)
+    // {
+    //     dd('Order Show' . $order->id);
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -57,7 +57,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        dd('Order Edit' . $order->id);
+        return view('admin.orders.create');
     }
 
     /**
