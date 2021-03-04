@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->enum('status', ['placed', 'processing', 'dispatched', 'canceled', 'delivered']);
-            $table->boolean('trackable');
+            $table->boolean('trackable')->default(false);
             $table->json('details');
             $table->foreignId('user_id');
             $table->foreignId('transaction_id');

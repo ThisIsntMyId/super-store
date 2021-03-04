@@ -16,13 +16,16 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->longText('description');
-            $table->enum('status', ['instock', 'outofstock', 'draft', 'publish', 'trash']);
-            $table->integer('quantity');
-            $table->float('price');
-            $table->json('categories');
-            $table->json('brand');
-            $table->json('tags');
+            $table->longText('description')->nullable();
+            $table->enum('status', ['instock', 'outofstock', 'draft', 'publish', 'trash'])->default('draft');
+            $table->integer('quantity')->default(0);
+            $table->float('price')->default(0);
+            $table->json('categories')->nullable();
+            $table->json('brands')->nullable();
+            $table->json('tags')->nullable();
+            $table->json('reviews')->nullable();
+            $table->string('banner')->nullable();
+            $table->json('images')->nullable();
             $table->timestamps();
         });
     }
