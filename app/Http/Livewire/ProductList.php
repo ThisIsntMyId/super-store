@@ -10,22 +10,41 @@ class ProductList extends Component
 {
     use WithPagination;
 
-    public $products = [];
-    public $sort;
+    public $sort="id";
     public $filter;
-    // public $page;
-    public $search;
+    public $search="";
 
-    public function mount()
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'sort' => ['except' => 'id']
+    ];
+
+    public function toggleSort($fieldName)
     {
-        $this->products = Product::paginate(10);
-        // $this->products = Product::all();
+        if($this->sort === $fieldName) {
+            $this->sort = '-' . $this->sort;
+        } else if ($this->sort === '-' .  $fieldName) {
+            $this->sort = 'id';
+        } else if ($this->sort !== $fieldName) {
+            $this->sort = $fieldName;
+        }
+    }
+
+    public function delete(Product $product)
+    {
+        $product->delete();
+    }
+    public function edit(Product $product)
+    {
+        return redirect()->route('admin.products.edit', $product->id);
     }
 
     public function render()
     {
         return view('livewire.product-list', [
-            // 'products' => Product::paginate(10)
+            'products' => Product::where('name', 'LIKE', '%'.$this->search.'%')
+                                    ->orderBy($this->sort[0] == '-' ? substr($this->sort, 1) : $this->sort, $this->sort[0] == '-' ? 'asc' : 'desc')
+                                    ->paginate(2)
         ]);
     }
 }
