@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\TransactionController;
+// use App\Http\Controllers\CategoryController;
+// use App\Http\Controllers\OrderController;
+// use App\Http\Controllers\ProductController;
+// use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,10 +25,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::resource('admin/products', ProductController::class)->except(['show']);
-    Route::resource('admin/orders', OrderController::class)->except(['show']);
-    Route::resource('admin/transactions', TransactionController::class)->except(['show', 'create', 'store', 'edit']);
-    Route::resource('admin/categories', CategoryController::class)->except(['show', 'create', 'edit']);
+Route::group([
+    'middleware' => ['auth:sanctum', 'verified'],
+    'prefix' => 'admin',
+    'namespace' => 'App\Http\Controllers',
+    'as' => 'admin.'
+], function () {
+    Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('orders', OrderController::class)->except(['show']);
+    Route::resource('transactions', TransactionController::class)->except(['show', 'create', 'store', 'edit']);
+    Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
 });
 

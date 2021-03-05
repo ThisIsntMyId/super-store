@@ -7,5 +7,7 @@
 
     <x-card>
         <h1>Products Index</h1>
+        <a href="{{ route('admin.products.create') }}">Create</a>
+        <livewire:product-list />
     </x-card>
 </x-app-layout>
