@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'status' => $this->faker->randomElement(['instock','outofstock','draft','publish','trash']),
             'quantity' => $this->faker->numberBetween(0, 100),
             'price' => $this->faker->randomFloat(2,0,1000),
-            'banner' => $this->faker->randomFloat(2,0,1000),
+            'banner' => $this->faker->imageUrl(),
             'images' => [$this->faker->imageUrl(), $this->faker->imageUrl(), $this->faker->imageUrl(), $this->faker->imageUrl()],
             'categories' => array_map(function () {return rand(1, 100);}, array_fill(0, rand(1, 10), null)),
             'brands' => array_map(function () {return rand(1, 100);}, array_fill(0, rand(1, 10), null)),

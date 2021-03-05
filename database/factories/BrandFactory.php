@@ -22,7 +22,7 @@ class BrandFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words($nb = 3, $asText = true),
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentences(10, true),
             'featured' => $this->faker->boolean(),
             'categories' => array_map(function () {return rand(1, 100);}, array_fill(0, rand(1, 10), null)),
