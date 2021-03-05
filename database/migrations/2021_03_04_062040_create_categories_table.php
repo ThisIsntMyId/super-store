@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->longText('description')->nullable();
-            $table->foreignId('parent_id');
+            $table->foreignId('parent_id')->nullable();
             $table->boolean('featured')->default(false);
             $table->timestamps();
         });

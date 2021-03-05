@@ -15,7 +15,6 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
             $table->string('acc_no');
             $table->float('amount');
             $table->enum('status', ['success', 'failed', 'hold']);

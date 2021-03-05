@@ -10,4 +10,8 @@ class Tag extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'categories' => 'array'
+    ];
 }

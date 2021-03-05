@@ -22,7 +22,9 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'acc_no' => $this->faker->regexify('##[A-Za-z0-9]{3}-[A-Za-z0-9]{5}'), 
+            'amount' => 7000, 
+            'status' => $this->faker->randomElement(['success', 'failed', 'hold']), 
         ];
     }
 }
