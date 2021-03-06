@@ -6,6 +6,18 @@
     </x-slot>
 
     <x-card>
-        <h1>Categories Index</h1>
+        <div class="mt-3">
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+        </div>
+
+        <livewire:categories-form />
     </x-card>
+    <x-card>
+        <livewire:categories-table />
+    </x-card>
+    
 </x-app-layout>
