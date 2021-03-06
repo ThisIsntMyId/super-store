@@ -91,7 +91,7 @@
                                 </path>
                             </svg>
                         </button>
-                        <div class="absolute flex flex-col w-24 p-0 bg-white border" x-show="open"
+                        <div class="absolute z-50 flex flex-col w-24 p-0 bg-white border" x-show="open"
                             @click.away="open = false">
                             <button class="flex flex-row p-2 m-2 border-b-2" wire:click="delete({{$product->id}})">
                                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
