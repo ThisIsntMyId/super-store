@@ -4,17 +4,22 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as FacadesRequest;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ProductForm extends Component
 {
+    use WithFileUploads;
+
     public $productName;
     public $productDesc;
     public $productStatus;
     public $productQuantity;
     public $productPrice;
+    public $productBanner;
+    public $productImages;
+    public $newProductImages = [];
     public $isEdit;
     public $product;
 
@@ -26,9 +31,9 @@ class ProductForm extends Component
             $this->productStatus = $request->product->status;
             $this->productQuantity = $request->product->quantity;
             $this->productPrice = $request->product->price;
+            $this->productImages = $request->product->images;
             $this->isEdit = true;
             $this->product = $request->product;
-            // dd($this->product);
         }
     }
 
@@ -38,27 +43,56 @@ class ProductForm extends Component
         'productStatus' => 'required|in:instock,outofstock,draft,publish,trash',
         'productQuantity' => 'required|integer',
         'productPrice' => 'required|numeric',
+        'productBanner' => 'nullable|image|max:1024',
+        'newProductImages.*' => 'nullable|image|max:1024'
     ];
+
+    public function updatedNewProductImages($val)
+    {
+        $this->productImages = array_merge($this->productImages, $val);
+    }
 
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
 
+    public function deleteImage($index)
+    {
+        array_splice($this->productImages, $index, 1);
+    }
+
     public function saveProduct()
     {
         $this->validate();
+        
         if($this->isEdit) {
             $this->product->name = $this->productName;
             $this->product->description = $this->productDesc;
             $this->product->status = $this->productStatus;
             $this->product->quantity = $this->productQuantity;
             $this->product->price = $this->productPrice;
-            $this->product->save();
 
+            if($this->productBanner) {
+                $this->productBanner = $this->productBanner->storeAs('photos', 'banner_' . $this->product->id, 'public');
+                $this->product->banner = Storage::url($this->productBanner);
+            }
+
+            $this->productImages = collect($this->productImages)
+                ->map(function($val, $key) {
+                    if(!is_string($val)) {
+                        return Storage::url($val->storeAs('productImages', 'productImage_'. $this->product->id . '_' . ($key + 1), 'public'));
+                    } else {
+                        return $val;
+                    }
+                });
+            $this->product->images = $this->productImages;
+            
+            $this->product->save();
             session()->flash('message', 'Product successfully updated.');
         } else {
-            Product::create([
+
+            $this->product = Product::create([
                 'name' => $this->productName,
                 'description' => $this->productDesc,
                 'status' => $this->productStatus,
@@ -66,6 +100,23 @@ class ProductForm extends Component
                 'price' => $this->productPrice,
             ]);
 
+            if($this->productBanner) {
+                $this->productBanner = $this->productBanner->storeAs('photos', 'banner_' . $this->product->id, 'public');
+                $this->product->banner = Storage::url($this->productBanner);
+            }
+
+            $this->productImages = collect($this->productImages)
+                ->map(function($val, $key) {
+                    if(!is_string($val)) {
+                        return Storage::url($val->storeAs('productImages', 'productImage_'. $this->product->id . '_' . ($key + 1), 'public'));
+                    } else {
+                        return $val;
+                    }
+                });
+
+            $this->product->images = $this->productImages;
+            
+            $this->product->save();
             session()->flash('message', 'Product successfully created.');
         }
         return redirect()->route('admin.products.index');

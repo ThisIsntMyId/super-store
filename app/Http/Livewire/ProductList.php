@@ -19,8 +19,14 @@ class ProductList extends Component
         'sort' => ['except' => 'id']
     ];
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function toggleSort($fieldName)
     {
+        $this->resetPage();
         if($this->sort === $fieldName) {
             $this->sort = '-' . $this->sort;
         } else if ($this->sort === '-' .  $fieldName) {
