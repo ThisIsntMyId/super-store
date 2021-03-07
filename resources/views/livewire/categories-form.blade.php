@@ -18,16 +18,14 @@
                     class="w-full mt-2 rounded-md form-input focus:border-indigo-600" type="text">
                 @error('categoryDesc') <span class="error">{{ $message }}</span> @enderror
             </div>
-    
-            <div class="mt-2">
+                
+            <div class="mt-2" wire:ignore>
                 <label class="text-gray-700" for="categoryParent">Parent</label>
                 <select wire:model="categoryParent" id="categoryParent"
                     class="w-full mt-2 rounded-md form-input focus:border-indigo-600">
-                    <option selected value="1">Instock</option>
-                    <option value="2">Outofstock</option>
-                    <option value="3">Draft</option>
-                    <option value="4">Publish</option>
-                    <option value="5">Trash</option>
+                    @foreach ($categories as $category)
+                        <option @if ($loop->first) selected @endif value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
                 </select>
                 @error('categoryParent') <span class="error">{{ $message }}</span> @enderror
             </div>
@@ -38,7 +36,6 @@
                     class="ml-2 rounded-md form-input focus:border-indigo-600" type="checkbox" value="1">
                 @error('categoryFeatured') <span class="error">{{ $message }}</span> @enderror
             </div>
-
         </div>
     
         <div class="flex justify-end mt-4">
@@ -46,5 +43,12 @@
                 class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">Save</button>
         </div>
     </div>
+
+    <script>
+        $(document).ready(() => {
+            $('#categoryParent').select2();
+            $('#categoryParent').on('change', (e) => { @this.categoryParent = e.target.value})
+        })
+    </script>
     
 </div>

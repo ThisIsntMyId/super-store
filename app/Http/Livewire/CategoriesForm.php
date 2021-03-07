@@ -45,6 +45,7 @@ class CategoriesForm extends Component
             $this->category->save();
 
             $this->emit('categoryCreated', $this->category);
+            $this->dispatchBrowserEvent('show-toast', ["message" => "category updated with id " . $this->category->id]);
         } else {
             $cat = Category::create([
                 'name' => $this->categoryName,
@@ -52,13 +53,17 @@ class CategoriesForm extends Component
                 'parent_id' => $this->categoryParent,
                 // 'featured' => $this->categoryFeatured,
             ]);
+            $this->reset();
             $this->emit('categoryCreated', $cat);
+            $this->dispatchBrowserEvent('show-toast', ["message" => "category created with id " . $cat->id]);
         }
 
     }
 
     public function render()
     {
-        return view('livewire.categories-form');
+        return view('livewire.categories-form', [
+            'categories' => Category::all()
+        ]);
     }
 }
