@@ -18,7 +18,7 @@ class ProductForm extends Component
     public $productQuantity;
     public $productPrice;
     public $productBanner;
-    public $productImages;
+    public $productImages = [];
     public $newProductImages = [];
     public $isEdit;
     public $product;
