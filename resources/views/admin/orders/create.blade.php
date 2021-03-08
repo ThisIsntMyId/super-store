@@ -7,5 +7,6 @@
 
     <x-card>
         <h1>Orders Create</h1>
+        <livewire:order-form />
     </x-card>
 </x-app-layout>
