@@ -1,6 +1,17 @@
 <div>
     <div class="mt-4">
-        <div class="mt-2" wire:ignore>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $key => $error)
+                    @dump($key, $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="mt-2">
             <label class="text-gray-700" for="order-status">Status</label>
             <select wire:model="order.status" id="order-status"
                 class="w-full mt-2 rounded-md form-input focus:border-indigo-600">
@@ -29,7 +40,55 @@
             @error('order.trackable') <span class="error">{{ $message }}</span> @enderror
         </div>
 
-        <div wire:ignore x-data="{cart: [], products: window.productsList }">
+        <div>
+            <button wire:click="createCartItem" >Add</button>
+        </div>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cart as $index => $cartItem)
+                        <tr>
+                            <td>
+                                <select wire:model="cart.{{$index}}.productId">
+                                    <option value="1">pr1</option>
+                                    <option value="2">pr2</option>
+                                    <option value="3">pr3</option>
+                                    <option value="4">pr4</option>
+                                    <option value="5">pr5</option>
+                                    <option value="6">pr6</option>
+                                    <option value="7">pr7</option>
+                                    <option value="8">pr8</option>
+                                    <option value="9">pr9</option>
+                                    <option value="10">pr10</option>
+                                </select>
+                                @error('cart.*.productId')<div class="error">{{ $message }}</div>@enderror
+                            </td>
+                            <td>$xxx</td>
+                            <td>
+                                <input wire:model="cart.{{$index}}.productQuantity" type="text">
+                                @error('cart.*.productQuantity')<div class="error">{{ $message }}</div>@enderror
+                            </td>
+                            <td>$yyy</td>
+                            <td><button wire:click="removeCartItem({{$index}})">Remove</button></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        @dump($cart)
+
+        {{-- <div wire:ignore x-data="{cart: [], products: window.productsList }">
             <button x-on:click="cart = cart.concat({productId: null, productPrice: 0, productQuantity: 0})" class="p-2 bg-blue-400">Add</button>
             <table>
                 <thead>
@@ -59,9 +118,9 @@
                     </template>
                 </tbody>
             </table>
-        </div>
+        </div> --}}
 
-        <div wire:ignore x-data="{names: ['']}">
+        {{-- <div wire:ignore x-data="{names: ['']}">
             <button x-on:click="names = names.concat('')">+</button>
             <template x-for="(name, i) in names" :key="i">
                 <div>
@@ -69,7 +128,7 @@
                     <button x-on:click="names = names.filter((n, ni) => i !== ni)">-</button>
                 </div>
             </template>
-        </div>
+        </div> --}}
     </div>
 
     <div class="flex justify-end mt-4">
